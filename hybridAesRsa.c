@@ -282,17 +282,17 @@ int main()
     int num, n, phin, cipher, decrypt;
     
     // Receive the length of key here.
+    while(Nr!=128 && Nr!=192 && Nr!=256 && Nr!=320)
+    {
+        printf("Enter the length of Key(128, 192, 256 or 320 only): ");
+        scanf("%d",&Nr);
+    }
 
     clock_t start, end;
      double cpu_time_used;
      
      start = clock();
 
-    while(Nr!=128 && Nr!=192 && Nr!=256 && Nr!=320)
-    {
-        printf("Enter the length of Key(128, 192, 256 or 320 only): ");
-        scanf("%d",&Nr);
-    }
     // Calculate Nk and Nr from the received value.
     Nk = Nr / 40;
     Nr = Nk + 6;
@@ -300,20 +300,23 @@ int main()
 //     Part 1: ********************************************************
     // The array temp stores the key.
     // The array temp2 stores the plaintext.
-    unsigned char temp[16] = {0x00  ,0x01  ,0x02  ,0x03  ,0x04  ,0x05  ,0x06  ,0x07  ,0x08  ,0x09  ,0x0a  ,0x0b  ,0x0c  ,0x0d  ,0x0e  ,0x0f};
-    unsigned char temp2[16]= {0x00  ,0x11  ,0x22  ,0x33  ,0x44  ,0x55  ,0x66  ,0x77  ,0x88  ,0x99  ,0xaa  ,0xbb  ,0xcc  ,0xdd  ,0xee  ,0xff};
+    unsigned char temp[40] = {0x00  ,0x01  ,0x02  ,0x03  ,0x04  ,0x05  ,0x06  ,0x07  ,0x08  ,0x09  ,0x0a  ,0x0b  ,0x0c  ,0x0d  ,0x0e  ,0x0f};
+    unsigned char temp2[40]= {0x00  ,0x11  ,0x22  ,0x33  ,0x44  ,0x55  ,0x66  ,0x77  ,0x88  ,0x99  ,0xaa  ,0xbb  ,0xcc  ,0xdd  ,0xee  ,0xff};
     // Copy the Key and PlainText
     for(i=0;i<Nk*4;i++)
     {
         Key[i]=temp[i];
         in[i]=temp2[i];
     }
+    
+    printf("Value of key: %d\n",Key);
+
 //           *********************************************************
 // Uncomment Part 2 if you need to read Key and PlainText from the keyboard.
 //     Part 2: ********************************************************
 /*
     //Clear the input buffer
-    flushall();
+    //flushall();
     //Recieve the Key from the user
     printf("Enter the Key in hexadecimal: ");
     for(i=0;i<Nk*4;i++)
@@ -327,6 +330,7 @@ int main()
     }
 */
 //             ********************************************************
+     
     // The KeyExpansion routine must be called before encryption.
     KeyExpansion();
     // The next function call encrypts the PlainText with the Key using AES algorithm.
@@ -339,7 +343,7 @@ int main()
     }
     printf("\n\n");
 
-    puts ("\nGenerating Prime P...");
+     puts ("\nGenerating Prime P...");
     srand (time(NULL));
     int p = rand() % 1000;
     while (checkPrime(p) != 1)
@@ -373,10 +377,11 @@ int main()
 			break;
 	}
 
-	printf("Value of e: %d\nValue of d: %d\n", e, d);
+	printf("Value of p: %d\nValue of q : %d\nValue of e: %d\nValue of d: %d\n", p, q, e, d);
 
 	cipher = powMod(i, e, n);
 	printf("The cipher key is: %d\n", cipher);
+
 
 
   end = clock();
